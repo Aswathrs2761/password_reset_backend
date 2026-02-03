@@ -10,7 +10,7 @@ dotenv.config()
 
 export const register = async (req, res) => {
     try {
-        
+
         const { name, email, password } = req.body
 
         const existingUser = await User.findOne({ email })
@@ -73,42 +73,40 @@ export const login = async (req, res) => {
 // forgot password
 
 export const forgotPassword = async (req, res) => {
-    try {
-        const { email } = req.body
+  try {
+    const { email } = req.body;
 
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: "User not found" })
-        }
-
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h", })
-
-        await Mail(
-            user.email,
-            "You are receiving this email because a request was made to reset the password for your account.",
-
-            `Please click the link below to reset your password:
-        
-         http://localhost:5173/reset-password/${user._id}/${token} 
-        
-         If you did not request a password reset, please ignore this email. Your account will remain secure.
-
-        For security reasons, this link will expire shortly.
-
-        Thank you,
-        The Support Team`
-        );
-
-        res.status(200).json({ message: "Email sent Successfully" })
-
-
-
-
-    } catch (error) {
-        console.error(error)
-        return res.status(500).json({ message: error.message })
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-}
+
+    const token = jwt.sign(
+      { _id: user._id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    await Mail(
+      user.email,
+      "You are receiving this email because a request was made to reset the password for your account.",
+      `Please click the link below to reset your password:
+      
+http://localhost:5173/reset-password/${user._id}/${token} 
+
+If you did not request a password reset, please ignore this email.`
+    );
+
+    // ✅ wait 5 seconds before responding
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
+    return res.status(200).json({ message: "Email sent Successfully" });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: error.message });
+  }
+};
 
 
 // Reset password
