@@ -1,4 +1,3 @@
-// utils/mailer.js
 import sgMail from "@sendgrid/mail";
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -6,7 +5,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const sendmail = async (to, subject, text) => {
   const msg = {
     to,
-    from: process.env.MAIL_FROM, // must match your verified sender in SendGrid
+    from: process.env.PASS_MAIL,   // ✅ match your env
     subject,
     text,
   };
