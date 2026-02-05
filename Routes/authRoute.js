@@ -8,8 +8,8 @@ const router = express.Router()
 
 router.post("/register", register)
 router.post("/login", Login )
-router.post("/forgotPassword", forgotPassword )
-router.post("/resetPassword/:id/:token", resetPassword )
+router.post("/forgot-password", forgotPassword )
+router.post("/reset-password/:id/:token", resetPassword )
 
 
 
