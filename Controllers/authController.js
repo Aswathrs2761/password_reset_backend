@@ -72,7 +72,7 @@ export const Login = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    const userData = localStorage.setItem("token", JSON.stringify(token));
+    // const userData = localStorage.setItem("token", JSON.stringify(token));
 
     res.status(200).json({
       message: "Login successfully",
